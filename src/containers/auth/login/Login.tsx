@@ -63,6 +63,7 @@ const Login: FC = () => {
     const classes = useStyles();
     const [isLoading, setIsLoading] = useState(false);
     const [serverError, setServerError] = useState("");
+    const [showpassword, setShowPassword] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -119,7 +120,7 @@ const Login: FC = () => {
             margin='normal'
             name='password'
             label='Password'
-            type='password'
+            type={showpassword ? 'text':'password'}
             id='password'
             value={formik.values.password}
             onChange={formik.handleChange}
@@ -127,6 +128,19 @@ const Login: FC = () => {
             error={formik.touched.password && Boolean(formik.errors.password)}
             helperText={formik.touched.password && formik.errors.password}
           />
+          <FormControlLabel
+          control={
+          <Checkbox
+            checked={showpassword}
+            onChange={(event)=>{
+                setShowPassword(event.target.checked)
+            }}
+            inputProps={{ 'aria-label': 'primary checkbox' }}
+          />
+        }
+          label="Show Password"
+          labelPlacement="end"
+        />
 
           <Button
             disabled={isLoading ? true : false}

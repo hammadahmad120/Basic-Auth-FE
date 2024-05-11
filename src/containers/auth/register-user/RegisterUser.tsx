@@ -8,6 +8,8 @@ import {
   makeStyles,
   CircularProgress,
   Container,
+  FormControlLabel,
+  Checkbox,
 } from "@material-ui/core";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -72,6 +74,7 @@ const RegisterUser: FC = () => {
     const classes = useStyles();
     const [isLoading, setIsLoading] = useState(false);
     const [serverError, setServerError] = useState("");
+    const [showpasswords, setShowPasswords] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -142,7 +145,7 @@ const RegisterUser: FC = () => {
             margin='normal'
             name='password'
             label='Password'
-            type='password'
+            type={showpasswords?'text':'password'}
             id='password'
             value={formik.values.password}
             onChange={formik.handleChange}
@@ -156,14 +159,28 @@ const RegisterUser: FC = () => {
             margin='normal'
             name='confirmPassword'
             label='Confirm Password'
-            type='password'
-            id='password'
+            type={showpasswords?'text':'password'}
+            id='confirmPassword'
             value={formik.values.confirmPassword}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
             helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
           />
+
+<FormControlLabel
+          control={
+          <Checkbox
+            checked={showpasswords}
+            onChange={(event)=>{
+                setShowPasswords(event.target.checked)
+            }}
+            inputProps={{ 'aria-label': 'primary checkbox' }}
+          />
+        }
+          label="Show Passwords"
+          labelPlacement="end"
+        />
 
           <Button
             disabled={isLoading ? true : false}
