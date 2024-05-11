@@ -1,23 +1,17 @@
-import React from 'react';
+import { FC, ReactElement } from "react";
+import AppRoutes from "./routes/AppRoutes/AppRoutes";
+import UserContextPovider from "./components/context/UserContextProvider";
+import { getLoggedInUser } from "./services/authServices";
 
-function App() {
+const App: FC = (): ReactElement => {
+  const loggedInUser = getLoggedInUser();
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <UserContextPovider user={loggedInUser}>
+      <AppRoutes user={loggedInUser} />
+      </UserContextPovider>
+    </>
   );
-}
-
+};
+ 
 export default App;
