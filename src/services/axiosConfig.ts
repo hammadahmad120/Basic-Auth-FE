@@ -27,10 +27,9 @@ AuthAxios.interceptors.response.use(
     return response;
   },
   (error:AxiosError): Promise<AxiosError> => {
-    console.log("Interceptor content----",error.response?.status && (error.response?.data as any)?.error)
     if (
       error.response &&
-      (error.response.status === 401 && (error.response?.data as any)?.error === "")
+      (error.response.status === 401 && (error.response?.data as any)?.error === "INVALID_JWT")
     ) {
       userLogout("/login");
     }
