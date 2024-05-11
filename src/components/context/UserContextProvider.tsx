@@ -4,7 +4,7 @@ import { IUserDataLocalStorage, getLoggedInUser } from "../../services/authServi
 interface UserContextProviderProps{
     user: IUserDataLocalStorage | null;
 }
-const UserContext = React.createContext(getLoggedInUser());
+export const UserContext = React.createContext(getLoggedInUser());
 
 const UserContextPovider: React.FC<React.PropsWithChildren<UserContextProviderProps>> = ({ user, children }) => {
   return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
