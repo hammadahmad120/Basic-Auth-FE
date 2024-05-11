@@ -1,8 +1,7 @@
 import Axios from "./axiosConfig";
 
-export interface IDataLocalStorage {
+export interface IDataLocalStorage extends IUserDataLocalStorage {
   token: string;
-  userData: IUserDataLocalStorage
 }
 
 export interface IUserDataLocalStorage {
@@ -10,17 +9,29 @@ export interface IUserDataLocalStorage {
   email: string;
 }
 
-export function userLogin(email: string, password: string) {
+interface LoginResponse {
+  accessToken:string;
+  userId: string;
+  email: string;
+  name: string;
+}
+
+export const userLogin = async(email: string, password: string):Promise<LoginResponse> => {
   const rqstBody = {
     email: email,
     password: password,
   };
-  return Axios.post("/auth/login", rqstBody, {
+  try{
+  const res = await Axios.post("/auth/login", rqstBody, {
     headers: { "Content-Type": "application/json" },
   });
+  return res.data as LoginResponse;
+}catch(err){
+ return Promise.reject(err);
+}
 }
 
-export function setUserToLocalStorage({ token, ...user }:IDataLocalStorage) {
+export const setUserToLocalStorage =({ token, ...user }:IDataLocalStorage) => {
   localStorage.setItem("token", token);
   localStorage.setItem("userData", JSON.stringify(user));
 }

@@ -41,7 +41,7 @@ export const AuthRoute = ({ path, component: Component, user }:AuthRouteProps) =
       render={(props) => {
         const isAuthenticated = !!user; // if already authenticated(logged in) then redirect to home page if try to visit login/signup
         if (isAuthenticated) {
-          return <Redirect to="/projects" />;
+          return <Redirect to="/dashboard" />;
         } else {
           return <Component {...props} />;
         }

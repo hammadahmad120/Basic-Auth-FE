@@ -23,6 +23,7 @@ import {
   setUserToLocalStorage,
 } from "../../../services/authServices";
 import AlertMessage from "../../../components/shared/alert-message/AlertMessage";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -62,22 +63,17 @@ const Login: FC = () => {
       setIsLoading(true);
       setServerError("");
       try{
-        const res = await userLogin(values.username, values.password);
+        const loggedInUser = await userLogin(values.username, values.password);
         setIsLoading(false);
-        console.log("Logged in----", res.data);
-        //   if (res.data?.status === true) {
-        //     setUserToLocalStorage(res.data.data);
-        //     window.location.replace("/dashboard");
-        //   }
+        setUserToLocalStorage({token: loggedInUser.accessToken, sub: loggedInUser.userId, email: loggedInUser.email});
+        window.location.replace("/dashboard");
       }catch(err){
         setIsLoading(false);
-        setServerError("Some error message");
-        // let errorMessage = err.message;
-        // if (err.response && err.response.data && err.response.data.message)
-        //   errorMessage = err.response.data.message;
-        // setServerError(errorMessage);
-        // setIsLoading(false);
-      }
+        if (axios.isAxiosError(err) && err.response?.data?.error) {  
+        setServerError(err.response?.data?.error);
+        }else setServerError("Some unexpected error occur")
+
+        }
     },
   });
   const classes = useStyles();
