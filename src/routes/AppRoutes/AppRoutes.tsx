@@ -1,5 +1,5 @@
-import React, { Suspense, lazy } from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import  { Suspense, lazy } from "react";
+import { Switch, Redirect } from "react-router-dom";
 import {ProtectedRoute, AuthRoute } from "../RouteWrapper";
 import Spinner from "../../components/shared/spinner/Spinner";
 import { IUserDataLocalStorage } from "../../services/authServices";

@@ -1,7 +1,6 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { useState } from "react";
 import {
-  Grid,
   Avatar,
   Button,
   TextField,
@@ -11,7 +10,6 @@ import {
   makeStyles,
   CircularProgress,
   Container,
-  Box,
 } from "@material-ui/core";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -24,7 +22,6 @@ import {
 import AlertMessage from "../../../components/shared/alert-message/AlertMessage";
 import axios from "axios";
 import { DEFAULT_SERVER_ERROR } from "../../../constants";
-import { Link } from "react-router-dom";
 import AuthFooterLink from "../../../components/auth/AuthFooterLink";
 
 const useStyles = makeStyles((theme) => ({

@@ -14,7 +14,6 @@ import {
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
-  userLogin,
   setUserToLocalStorage,
   registerUser,
 } from "../../../services/authServices";
