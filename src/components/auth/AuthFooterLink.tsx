@@ -9,7 +9,7 @@ interface AuthFooterLinkProps {
 }
 const AuthFooterLink:FC<AuthFooterLinkProps> = ({text, linkText, linkTo})=>{
     return(
-    <Box style={{display: "flex", alignItems:"center"}}>
+    <Box style={{display: "flex", alignItems:"center", marginBottom:"32px"}}>
     <Box>
         {text}
             <Link to={linkTo}>

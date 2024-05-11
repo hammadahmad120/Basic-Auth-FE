@@ -119,7 +119,6 @@ const RegisterUser: FC = () => {
             id='name'
             label='Name'
             name='name'
-            autoFocus
             value={formik.values.name}
             error={formik.touched.name && Boolean(formik.errors.name)}
             helperText={formik.touched.name && formik.errors.name}

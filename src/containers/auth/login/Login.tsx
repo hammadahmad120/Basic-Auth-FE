@@ -89,7 +89,6 @@ const Login: FC = () => {
     },
   });
 
-  console.log("Its rerendering----", formik.touched.email, formik.errors.email)
   return (
     <Container component='main' maxWidth='xs'>
       <div className={classes.paper}>
@@ -107,7 +106,6 @@ const Login: FC = () => {
             id='email'
             label='Email'
             name='email'
-            autoFocus
             value={formik.values.email}
             error={formik.touched.email && Boolean(formik.errors.email)}
             helperText={formik.touched.email && formik.errors.email}
