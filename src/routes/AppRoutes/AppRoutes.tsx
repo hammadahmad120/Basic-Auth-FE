@@ -1,15 +1,14 @@
 import  { Suspense, lazy } from "react";
-import { Switch, Redirect } from "react-router-dom";
+import { Switch, Redirect, Route } from "react-router-dom";
 import {ProtectedRoute, AuthRoute } from "../RouteWrapper";
 import Spinner from "../../components/shared/spinner/Spinner";
 import { IUserDataLocalStorage } from "../../services/authServices";
 const Login = lazy(() => import("../../containers/auth/login/Login"));
 const RegisterUser = lazy(() => import("../../containers/auth/register-user/RegisterUser"));
 const Dashboard = lazy(() => import("../../containers/dashboard/Dashboard"));
-
-// const NotFoundPage = lazy(() =>
-//   import("../../containers/NotFoundPage/NotFoundPage")
-// );
+const NotFoundPage = lazy(() =>
+  import("../../containers/not-found-page/NotFoundPage")
+);
 
 const AppRoutes = ({ user }:{user: IUserDataLocalStorage | null}) => {
   return (
@@ -24,9 +23,9 @@ const AppRoutes = ({ user }:{user: IUserDataLocalStorage | null}) => {
           user={user}
         />
 
-        {/* <Route path="/not-found" component={NotFoundPage} /> */}
+        <Route path="/not-found" component={NotFoundPage} />
         <Redirect from="/" to="/login" exact />
-        {/* <Redirect to="/not-found" /> */}
+        <Redirect to="/not-found" />
       </Switch>
     </Suspense>
   );
