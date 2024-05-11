@@ -4,6 +4,7 @@ import {ProtectedRoute, AuthRoute } from "../RouteWrapper";
 import Spinner from "../../components/shared/spinner/Spinner";
 import { IUserDataLocalStorage } from "../../services/authServices";
 const Login = lazy(() => import("../../containers/auth/login/Login"));
+const RegisterUser = lazy(() => import("../../containers/auth/register-user/RegisterUser"));
 const Dashboard = lazy(() => import("../../containers/dashboard/Dashboard"));
 
 // const NotFoundPage = lazy(() =>
@@ -15,6 +16,7 @@ const AppRoutes = ({ user }:{user: IUserDataLocalStorage | null}) => {
     <Suspense fallback={<Spinner isCenter={true} />}>
       <Switch>
         <AuthRoute path="/login" component={Login} user={user} />
+        <AuthRoute path="/register" component={RegisterUser} user={user} />
 
         <ProtectedRoute
           path="/dashboard"

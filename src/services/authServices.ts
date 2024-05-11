@@ -9,23 +9,39 @@ export interface IUserDataLocalStorage {
   email: string;
 }
 
-interface LoginResponse {
+interface AuthResponse {
   accessToken:string;
   userId: string;
   email: string;
   name: string;
 }
 
-export const userLogin = async(email: string, password: string):Promise<LoginResponse> => {
+export const userLogin = async(email: string, password: string):Promise<AuthResponse> => {
   const rqstBody = {
-    email: email,
-    password: password,
+    email,
+    password
   };
   try{
   const res = await Axios.post("/auth/login", rqstBody, {
     headers: { "Content-Type": "application/json" },
   });
-  return res.data as LoginResponse;
+  return res.data as AuthResponse;
+}catch(err){
+ return Promise.reject(err);
+}
+}
+
+export const registerUser = async(email: string, password: string, name: string):Promise<AuthResponse> => {
+  const rqstBody = {
+    email,
+    password,
+    name
+  };
+  try{
+  const res = await Axios.post("/auth/register", rqstBody, {
+    headers: { "Content-Type": "application/json" },
+  });
+  return res.data as AuthResponse;
 }catch(err){
  return Promise.reject(err);
 }

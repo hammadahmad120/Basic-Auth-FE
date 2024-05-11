@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import { FunctionComponent } from "react";
 import { Route, Redirect, RouteComponentProps } from "react-router-dom";
 import { IUserDataLocalStorage } from "../../services/authServices";
 

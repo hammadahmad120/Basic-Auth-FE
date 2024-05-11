@@ -1,0 +1,1 @@
+export const DEFAULT_SERVER_ERROR = "Unexpected issue, please try again later!"
