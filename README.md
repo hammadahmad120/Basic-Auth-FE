@@ -20,7 +20,6 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - formik (For forms management)
 - Yup (For input validations)
 - typescript (For adding types)
--
 
 ## Installation
 - create .env.development.local and copy .env content in it
