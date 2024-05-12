@@ -23,7 +23,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Installation
 - create .env.development.local and copy .env content in it
-- -> NOTE <- if you want to enable captcha for sign in and sign up, uncomment REACT_APP_API_RECAPTCHA_SITE_KEY in your env file and place your google site key, by default it commented in env file so captcha will not be visible and is disabled
+- -> NOTE <- if you want to enable captcha for sign in and sign up, uncomment REACT_APP_API_RECAPTCHA_SITE_KEY in your env file and place your google reCaptcha site key, by default it commented in env file so captcha will not be visible and is disabled
 
 In the project directory, you can run:
 
