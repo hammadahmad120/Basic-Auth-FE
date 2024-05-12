@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useRef } from "react";
 import { useState } from "react";
 import {
   Avatar,
@@ -22,6 +22,7 @@ import axios from "axios";
 import { DEFAULT_SERVER_ERROR } from "../../../constants";
 import AuthFooterLink from "../../../components/auth/AuthFooterLink";
 import { AccountCircle } from "@material-ui/icons";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -45,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
 
 const errorCodeMapper = {
   USER_ALREADY_EXIST: "Email address already taken",
+  INVALID_CAPTCHA: "Captcha validation failed, Sign up Restricted"
 } as any;
 
 const validationSchema = Yup.object({
@@ -71,11 +73,15 @@ const validationSchema = Yup.object({
   ),
 });
 
+const RECAPTCHA_SITEKEY = process.env.REACT_APP_API_RECAPTCHA_SITE_KEY;
+
 const RegisterUser: FC = () => {
   const classes = useStyles();
   const [isLoading, setIsLoading] = useState(false);
   const [serverError, setServerError] = useState("");
   const [showpasswords, setShowPasswords] = useState(false);
+
+  const reCaptchaRef = useRef<any>();
 
   const formik = useFormik({
     initialValues: {
@@ -89,10 +95,15 @@ const RegisterUser: FC = () => {
       setIsLoading(true);
       setServerError("");
       try {
+        let token = "";
+        if(RECAPTCHA_SITEKEY && reCaptchaRef.current){
+           token = await reCaptchaRef.current.executeAsync();
+        }
         const registeredUser = await registerUser(
           values.email,
           values.password,
-          values.name
+          values.name,
+          token
         );
         setIsLoading(false);
         setUserToLocalStorage({
@@ -107,6 +118,10 @@ const RegisterUser: FC = () => {
           const errorCode = err.response?.data?.error || "";
           setServerError(errorCodeMapper?.[errorCode] || DEFAULT_SERVER_ERROR);
         } else setServerError(DEFAULT_SERVER_ERROR);
+      }finally{
+        if(RECAPTCHA_SITEKEY && reCaptchaRef.current){
+          reCaptchaRef.current.reset();
+        }
       }
     },
   });
@@ -212,6 +227,13 @@ const RegisterUser: FC = () => {
           linkTo="/login"
         />
         <AlertMessage showAlert={!!serverError} message={serverError} />
+        {RECAPTCHA_SITEKEY &&(
+        <ReCAPTCHA
+          sitekey={RECAPTCHA_SITEKEY}
+          size="invisible"
+          ref={reCaptchaRef}
+        />
+        )}
       </div>
     </Container>
   );

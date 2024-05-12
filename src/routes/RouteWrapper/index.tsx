@@ -26,7 +26,6 @@ export const ProtectedRoute = ({
       exact
       render={(props) => {
         const isAuthenticated = !!user; // if user authenticated then allow to visit page, otherwise redirect to login
-        //console.log("Props",props)
         if (isAuthenticated) {
           return <Component {...props} />;
         } else {

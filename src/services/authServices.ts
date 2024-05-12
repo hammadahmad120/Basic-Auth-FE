@@ -20,11 +20,13 @@ interface AuthResponse extends User {
 
 export const userLogin = async (
   email: string,
-  password: string
+  password: string,
+  token: string
 ): Promise<AuthResponse> => {
   const rqstBody = {
     email,
     password,
+    recaptchaToken: token
   };
   try {
     const res = await Axios.post("/auth/login", rqstBody, {
@@ -39,12 +41,14 @@ export const userLogin = async (
 export const registerUser = async (
   email: string,
   password: string,
-  name: string
+  name: string,
+  token: string
 ): Promise<AuthResponse> => {
   const rqstBody = {
     email,
     password,
     name,
+    recaptchaToken: token
   };
   try {
     const res = await Axios.post("/auth/register", rqstBody, {

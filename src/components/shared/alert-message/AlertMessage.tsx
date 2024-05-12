@@ -44,7 +44,7 @@ const AlertMessage = ({
   }, [showAlert]);
 
   return (
-    <Collapse in={open}>
+    <Collapse in={open && !!message}>
       <Alert
         action={
           <IconButton

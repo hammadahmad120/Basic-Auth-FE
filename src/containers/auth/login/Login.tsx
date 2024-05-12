@@ -1,5 +1,6 @@
-import { FC } from "react";
+import { FC, useRef } from "react";
 import { useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 import {
   Avatar,
   Button,
@@ -46,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
 
 const errorCodeMapper = {
   INVALID_EMAIL_OR_PASSWORD: "Your email or password is incorrect",
+  INVALID_CAPTCHA: "Captcha validation failed, Sign in Restricted"
 } as any;
 
 const validationSchema = Yup.object({
@@ -55,11 +57,15 @@ const validationSchema = Yup.object({
   password: Yup.string().required("Password is required"),
 });
 
+const RECAPTCHA_SITEKEY = process.env.REACT_APP_API_RECAPTCHA_SITE_KEY;
+
 const Login: FC = () => {
   const classes = useStyles();
   const [isLoading, setIsLoading] = useState(false);
   const [serverError, setServerError] = useState("");
   const [showpassword, setShowPassword] = useState(false);
+
+  const reCaptchaRef = useRef<any>();
 
   const formik = useFormik({
     initialValues: {
@@ -71,7 +77,11 @@ const Login: FC = () => {
       setIsLoading(true);
       setServerError("");
       try {
-        const loggedInUser = await userLogin(values.email, values.password);
+        let token = "";
+        if(RECAPTCHA_SITEKEY && reCaptchaRef.current){
+           token = await reCaptchaRef.current.executeAsync();
+        }
+        const loggedInUser = await userLogin(values.email, values.password, token);
         setIsLoading(false);
         setUserToLocalStorage({
           token: loggedInUser.accessToken,
@@ -85,6 +95,10 @@ const Login: FC = () => {
           const errorCode = err.response?.data?.error || "";
           setServerError(errorCodeMapper?.[errorCode] || DEFAULT_SERVER_ERROR);
         } else setServerError(DEFAULT_SERVER_ERROR);
+      }finally{
+        if(RECAPTCHA_SITEKEY && reCaptchaRef.current){
+          reCaptchaRef.current.reset();
+        }
       }
     },
   });
@@ -157,6 +171,13 @@ const Login: FC = () => {
           linkTo="/register"
         />
         <AlertMessage showAlert={!!serverError} message={serverError} />
+        {RECAPTCHA_SITEKEY &&(
+        <ReCAPTCHA
+          sitekey={RECAPTCHA_SITEKEY}
+          size="invisible"
+          ref={reCaptchaRef}
+        />
+        )}
       </div>
     </Container>
   );
