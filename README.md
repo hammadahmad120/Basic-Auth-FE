@@ -15,12 +15,16 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Major dependencies
 - react-router-dom ( For routing)
 - material-ui (For creating design components)
+- react-google-recaptcha (for captcha verification)
 - axios (For communicating with server)
 - formik (For forms management)
 - Yup (For input validations)
 - typescript (For adding types)
+-
 
-## Available Scripts
+## Installation
+- create .env.development.local and copy .env content in it
+- -> NOTE <- if you want to enable captcha for sign in and sign up, uncomment REACT_APP_API_RECAPTCHA_SITE_KEY in your env file and place your google site key, by default it commented in env file so captcha will not be visible
 
 In the project directory, you can run:
 
