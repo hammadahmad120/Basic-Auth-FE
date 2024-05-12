@@ -7,11 +7,11 @@ const App: FC = (): ReactElement => {
   const loggedInUser = getLoggedInUser();
   return (
     <>
-    <UserContextPovider user={loggedInUser}>
-      <AppRoutes user={loggedInUser} />
+      <UserContextPovider user={loggedInUser}>
+        <AppRoutes user={loggedInUser} />
       </UserContextPovider>
     </>
   );
 };
- 
+
 export default App;

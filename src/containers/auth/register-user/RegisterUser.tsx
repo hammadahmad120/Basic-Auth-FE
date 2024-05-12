@@ -44,80 +44,90 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const errorCodeMapper = {
-    "USER_ALREADY_EXIST": "Email address already taken",
+  USER_ALREADY_EXIST: "Email address already taken",
 } as any;
 
 const validationSchema = Yup.object({
   name: Yup.string()
-  .min(2,"Name must contain atleast 2 characters")
-  .max(60,"Name should not be more then 60 characters")
-  .required("Name is required"),
+    .min(2, "Name must contain atleast 2 characters")
+    .max(60, "Name should not be more then 60 characters")
+    .required("Name is required"),
   email: Yup.string()
-  .email("Invalid email address")
-  .required("Email is required"),
-  password: Yup
-    .string()
+    .email("Invalid email address")
+    .required("Email is required"),
+  password: Yup.string()
     .required("Please enter your password")
     .max(30, "Password should not be more then 30 characters")
     .matches(
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
       "Password must contain atleast 8 characters with atleast 1 letter, 1 number and 1 special character"
     ),
-  confirmPassword: Yup.string()
-  .test('passwords-match', ' Password and Confirm Password must match', function(value){
-    return this.parent.password === value
-  })
+  confirmPassword: Yup.string().test(
+    "passwords-match",
+    " Password and Confirm Password must match",
+    function (value) {
+      return this.parent.password === value;
+    }
+  ),
 });
 
 const RegisterUser: FC = () => {
-    const classes = useStyles();
-    const [isLoading, setIsLoading] = useState(false);
-    const [serverError, setServerError] = useState("");
-    const [showpasswords, setShowPasswords] = useState(false);
+  const classes = useStyles();
+  const [isLoading, setIsLoading] = useState(false);
+  const [serverError, setServerError] = useState("");
+  const [showpasswords, setShowPasswords] = useState(false);
 
   const formik = useFormik({
     initialValues: {
-      name:"",
+      name: "",
       email: "",
       password: "",
-      confirmPassword:""
+      confirmPassword: "",
     },
     validationSchema: validationSchema,
-    onSubmit: async(values) => {
+    onSubmit: async (values) => {
       setIsLoading(true);
       setServerError("");
-      try{
-        const registeredUser = await registerUser(values.email, values.password, values.name);
+      try {
+        const registeredUser = await registerUser(
+          values.email,
+          values.password,
+          values.name
+        );
         setIsLoading(false);
-        setUserToLocalStorage({token: registeredUser.accessToken, sub: registeredUser.userId, email: registeredUser.email});
+        setUserToLocalStorage({
+          token: registeredUser.accessToken,
+          sub: registeredUser.userId,
+          email: registeredUser.email,
+        });
         window.location.replace("/dashboard");
-      }catch(err){
+      } catch (err) {
         setIsLoading(false);
         if (axios.isAxiosError(err)) {
-            const errorCode = err.response?.data?.error || "";
-            setServerError(errorCodeMapper?.[errorCode] || DEFAULT_SERVER_ERROR);
-        } else setServerError(DEFAULT_SERVER_ERROR)
-        }
+          const errorCode = err.response?.data?.error || "";
+          setServerError(errorCodeMapper?.[errorCode] || DEFAULT_SERVER_ERROR);
+        } else setServerError(DEFAULT_SERVER_ERROR);
+      }
     },
   });
 
   return (
-    <Container component='main' maxWidth='xs'>
+    <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <AccountCircle />
         </Avatar>
-        <Typography component='h1' variant='h5'>
+        <Typography component="h1" variant="h5">
           Sign up
         </Typography>
         <form className={classes.form} onSubmit={formik.handleSubmit}>
-        <TextField
+          <TextField
             fullWidth
-            variant='outlined'
-            margin='normal'
-            id='name'
-            label='Name'
-            name='name'
+            variant="outlined"
+            margin="normal"
+            id="name"
+            label="Name"
+            name="name"
             value={formik.values.name}
             error={formik.touched.name && Boolean(formik.errors.name)}
             helperText={formik.touched.name && formik.errors.name}
@@ -126,11 +136,11 @@ const RegisterUser: FC = () => {
           />
           <TextField
             fullWidth
-            variant='outlined'
-            margin='normal'
-            id='email'
-            label='Email'
-            name='email'
+            variant="outlined"
+            margin="normal"
+            id="email"
+            label="Email"
+            name="email"
             value={formik.values.email}
             error={formik.touched.email && Boolean(formik.errors.email)}
             helperText={formik.touched.email && formik.errors.email}
@@ -139,12 +149,12 @@ const RegisterUser: FC = () => {
           />
           <TextField
             fullWidth
-            variant='outlined'
-            margin='normal'
-            name='password'
-            label='Password'
-            type={showpasswords?'text':'password'}
-            id='password'
+            variant="outlined"
+            margin="normal"
+            name="password"
+            label="Password"
+            type={showpasswords ? "text" : "password"}
+            id="password"
             value={formik.values.password}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -153,49 +163,58 @@ const RegisterUser: FC = () => {
           />
           <TextField
             fullWidth
-            variant='outlined'
-            margin='normal'
-            name='confirmPassword'
-            label='Confirm Password'
-            type={showpasswords?'text':'password'}
-            id='confirmPassword'
+            variant="outlined"
+            margin="normal"
+            name="confirmPassword"
+            label="Confirm Password"
+            type={showpasswords ? "text" : "password"}
+            id="confirmPassword"
             value={formik.values.confirmPassword}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
-            helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
+            error={
+              formik.touched.confirmPassword &&
+              Boolean(formik.errors.confirmPassword)
+            }
+            helperText={
+              formik.touched.confirmPassword && formik.errors.confirmPassword
+            }
           />
 
-<FormControlLabel
-          control={
-          <Checkbox
-            checked={showpasswords}
-            onChange={(event)=>{
-                setShowPasswords(event.target.checked)
-            }}
-            inputProps={{ 'aria-label': 'primary checkbox' }}
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={showpasswords}
+                onChange={(event) => {
+                  setShowPasswords(event.target.checked);
+                }}
+                inputProps={{ "aria-label": "primary checkbox" }}
+              />
+            }
+            label="Show Passwords"
+            labelPlacement="end"
           />
-        }
-          label="Show Passwords"
-          labelPlacement="end"
-        />
 
           <Button
             disabled={isLoading ? true : false}
-            type='submit'
+            type="submit"
             fullWidth
-            variant='contained'
-            color='primary'
+            variant="contained"
+            color="primary"
             className={classes.submit}
           >
             {isLoading ? <CircularProgress size={20} /> : "SIGN Up"}
           </Button>
         </form>
-        <AuthFooterLink text="Already have an account?" linkText=" Sign in" linkTo="/login" />
+        <AuthFooterLink
+          text="Already have an account?"
+          linkText=" Sign in"
+          linkTo="/login"
+        />
         <AlertMessage showAlert={!!serverError} message={serverError} />
       </div>
     </Container>
   );
-}
+};
 
 export default RegisterUser;

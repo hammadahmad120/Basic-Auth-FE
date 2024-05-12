@@ -7,15 +7,19 @@ interface WrapperProps {
   user: IUserDataLocalStorage | null;
 }
 
-interface AuthRouteProps extends WrapperProps{
+interface AuthRouteProps extends WrapperProps {
   component: FunctionComponent<RouteComponentProps>;
 }
 
-interface ProtectedRouteProps extends WrapperProps{
+interface ProtectedRouteProps extends WrapperProps {
   component: FunctionComponent<RouteComponentProps>;
 }
 
-export const ProtectedRoute = ({ path, component: Component, user }:ProtectedRouteProps) => {
+export const ProtectedRoute = ({
+  path,
+  component: Component,
+  user,
+}: ProtectedRouteProps) => {
   return (
     <Route
       path={path}
@@ -33,7 +37,11 @@ export const ProtectedRoute = ({ path, component: Component, user }:ProtectedRou
   );
 };
 
-export const AuthRoute = ({ path, component: Component, user }:AuthRouteProps) => {
+export const AuthRoute = ({
+  path,
+  component: Component,
+  user,
+}: AuthRouteProps) => {
   return (
     <Route
       path={path}

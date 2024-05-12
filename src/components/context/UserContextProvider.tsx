@@ -1,12 +1,17 @@
 import React from "react";
-import { IUserDataLocalStorage, getLoggedInUser } from "../../services/authServices";
+import {
+  IUserDataLocalStorage,
+  getLoggedInUser,
+} from "../../services/authServices";
 
-interface UserContextProviderProps{
-    user: IUserDataLocalStorage | null;
+interface UserContextProviderProps {
+  user: IUserDataLocalStorage | null;
 }
 export const UserContext = React.createContext(getLoggedInUser());
 
-const UserContextPovider: React.FC<React.PropsWithChildren<UserContextProviderProps>> = ({ user, children }) => {
+const UserContextPovider: React.FC<
+  React.PropsWithChildren<UserContextProviderProps>
+> = ({ user, children }) => {
   return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
 };
 

@@ -10,17 +10,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface SpinnerProps {
-    size?: number;
-    isCenter?: boolean;
-    color?: "primary" | "secondary" | "inherit";
-    styles?: Record<string, string>
+  size?: number;
+  isCenter?: boolean;
+  color?: "primary" | "secondary" | "inherit";
+  styles?: Record<string, string>;
 }
 const Spinner = ({
   size = 32,
   isCenter = true,
   color = "primary",
   styles = {},
-}:SpinnerProps) => {
+}: SpinnerProps) => {
   const classes = useStyles();
 
   return (

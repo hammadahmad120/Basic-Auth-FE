@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     alignItems: "center",
-    justifyContent:"center"
+    justifyContent: "center",
   },
   toolbar: {
     paddingRight: 24,
@@ -29,84 +29,72 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
-  welcomeMsg:{
-    marginTop:"160px"
-  }
+  welcomeMsg: {
+    marginTop: "160px",
+  },
 }));
 
-const Dashboard:FC = () => {
+const Dashboard: FC = () => {
   const classes = useStyles();
   const [user, setUser] = useState<User | null>(null);
-  const [isUserLoading, setIsUserLoading] = useState(true)
+  const [isUserLoading, setIsUserLoading] = useState(true);
 
-  const fetchUser = async() =>{
-    try{
-        const userResponse = await getUser();
-        setUser(userResponse);
-    }catch(_){
-    }finally{
-        setIsUserLoading(false);
+  const fetchUser = async () => {
+    try {
+      const userResponse = await getUser();
+      setUser(userResponse);
+    } catch (_) {
+    } finally {
+      setIsUserLoading(false);
     }
-  }
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchUser();
-  },[]);
+  }, []);
 
-
-  const handleLogout = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleLogout = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     userLogout("/login");
   };
 
   return (
     <div className={classes.root}>
-        {isUserLoading?(
-            <Spinner isCenter={true} />
-        ):(
-            <>
-        <AppBar
-        position='absolute'
-        className={classes.appBar}
-      >
-        <Toolbar className={classes.toolbar}>
-          <Typography
-            component='h1'
-            variant='h6'
-            color='inherit'
-            noWrap
-            className={classes.title}
-          >
-            Easy Generator Test
-          </Typography>
-          {user?.name &&(
-            <Chip
-            icon={<FaceIcon />}
-            label={user.name}
-          />
-          )}
-          <IconButton
-            color='inherit'
-            onClick={handleLogout}
-          >
-            <ExitToAppIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
+      {isUserLoading ? (
+        <Spinner isCenter={true} />
+      ) : (
+        <>
+          <AppBar position="absolute" className={classes.appBar}>
+            <Toolbar className={classes.toolbar}>
+              <Typography
+                component="h1"
+                variant="h6"
+                color="inherit"
+                noWrap
+                className={classes.title}
+              >
+                Easy Generator Test
+              </Typography>
+              {user?.name && <Chip icon={<FaceIcon />} label={user.name} />}
+              <IconButton color="inherit" onClick={handleLogout}>
+                <ExitToAppIcon />
+              </IconButton>
+            </Toolbar>
+          </AppBar>
 
-      <Typography
-            component='h1'
-            variant='h4'
-            color='secondary'
+          <Typography
+            component="h1"
+            variant="h4"
+            color="secondary"
             noWrap
             className={classes.welcomeMsg}
           >
             Welcome to the application
           </Typography>
-        </>)}
-      
+        </>
+      )}
     </div>
   );
-}
+};
 
 export default Dashboard;

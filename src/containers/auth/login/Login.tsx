@@ -45,22 +45,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const errorCodeMapper = {
-    "INVALID_EMAIL_OR_PASSWORD": "Your email or password is incorrect",
+  INVALID_EMAIL_OR_PASSWORD: "Your email or password is incorrect",
 } as any;
 
 const validationSchema = Yup.object({
   email: Yup.string()
-  .email("Invalid email address")
-  .required("Email is required"),
-  password: Yup.string()
-    .required("Password is required"),
+    .email("Invalid email address")
+    .required("Email is required"),
+  password: Yup.string().required("Password is required"),
 });
 
 const Login: FC = () => {
-    const classes = useStyles();
-    const [isLoading, setIsLoading] = useState(false);
-    const [serverError, setServerError] = useState("");
-    const [showpassword, setShowPassword] = useState(false);
+  const classes = useStyles();
+  const [isLoading, setIsLoading] = useState(false);
+  const [serverError, setServerError] = useState("");
+  const [showpassword, setShowPassword] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -68,41 +67,45 @@ const Login: FC = () => {
       password: "",
     },
     validationSchema: validationSchema,
-    onSubmit: async(values) => {
+    onSubmit: async (values) => {
       setIsLoading(true);
       setServerError("");
-      try{
+      try {
         const loggedInUser = await userLogin(values.email, values.password);
         setIsLoading(false);
-        setUserToLocalStorage({token: loggedInUser.accessToken, sub: loggedInUser.userId, email: loggedInUser.email});
+        setUserToLocalStorage({
+          token: loggedInUser.accessToken,
+          sub: loggedInUser.userId,
+          email: loggedInUser.email,
+        });
         window.location.replace("/dashboard");
-      }catch(err){
+      } catch (err) {
         setIsLoading(false);
         if (axios.isAxiosError(err)) {
-            const errorCode = err.response?.data?.error || "";
-            setServerError(errorCodeMapper?.[errorCode] || DEFAULT_SERVER_ERROR);
-        } else setServerError(DEFAULT_SERVER_ERROR)
-        }
+          const errorCode = err.response?.data?.error || "";
+          setServerError(errorCodeMapper?.[errorCode] || DEFAULT_SERVER_ERROR);
+        } else setServerError(DEFAULT_SERVER_ERROR);
+      }
     },
   });
 
   return (
-    <Container component='main' maxWidth='xs'>
+    <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component='h1' variant='h5'>
+        <Typography component="h1" variant="h5">
           Sign in
         </Typography>
         <form className={classes.form} onSubmit={formik.handleSubmit}>
           <TextField
             fullWidth
-            variant='outlined'
-            margin='normal'
-            id='email'
-            label='Email'
-            name='email'
+            variant="outlined"
+            margin="normal"
+            id="email"
+            label="Email"
+            name="email"
             value={formik.values.email}
             error={formik.touched.email && Boolean(formik.errors.email)}
             helperText={formik.touched.email && formik.errors.email}
@@ -111,12 +114,12 @@ const Login: FC = () => {
           />
           <TextField
             fullWidth
-            variant='outlined'
-            margin='normal'
-            name='password'
-            label='Password'
-            type={showpassword ? 'text':'password'}
-            id='password'
+            variant="outlined"
+            margin="normal"
+            name="password"
+            label="Password"
+            type={showpassword ? "text" : "password"}
+            id="password"
             value={formik.values.password}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -124,35 +127,39 @@ const Login: FC = () => {
             helperText={formik.touched.password && formik.errors.password}
           />
           <FormControlLabel
-          control={
-          <Checkbox
-            checked={showpassword}
-            onChange={(event)=>{
-                setShowPassword(event.target.checked)
-            }}
-            inputProps={{ 'aria-label': 'primary checkbox' }}
+            control={
+              <Checkbox
+                checked={showpassword}
+                onChange={(event) => {
+                  setShowPassword(event.target.checked);
+                }}
+                inputProps={{ "aria-label": "primary checkbox" }}
+              />
+            }
+            label="Show Password"
+            labelPlacement="end"
           />
-        }
-          label="Show Password"
-          labelPlacement="end"
-        />
 
           <Button
             disabled={isLoading ? true : false}
-            type='submit'
+            type="submit"
             fullWidth
-            variant='contained'
-            color='primary'
+            variant="contained"
+            color="primary"
             className={classes.submit}
           >
             {isLoading ? <CircularProgress size={20} /> : "SIGN IN"}
           </Button>
         </form>
-        <AuthFooterLink text="Don't have an account?" linkText=" Sign up" linkTo="/register" />
+        <AuthFooterLink
+          text="Don't have an account?"
+          linkText=" Sign up"
+          linkTo="/register"
+        />
         <AlertMessage showAlert={!!serverError} message={serverError} />
       </div>
     </Container>
   );
-}
+};
 
 export default Login;
