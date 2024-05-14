@@ -39,17 +39,16 @@ const Dashboard: FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [isUserLoading, setIsUserLoading] = useState(true);
 
-  const fetchUser = async () => {
-    try {
-      const userResponse = await getUser();
-      setUser(userResponse);
-    } catch (_) {
-    } finally {
-      setIsUserLoading(false);
-    }
-  };
-
   useEffect(() => {
+    async function fetchUser(){
+      try {
+        const userResponse = await getUser();
+        setUser(userResponse);
+      } catch (_) {
+      } finally {
+        setIsUserLoading(false);
+      }
+    };
     fetchUser();
   }, []);
 
